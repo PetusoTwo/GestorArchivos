@@ -27,6 +27,8 @@ return [
     'panel_user' => [
         'enabled' => true,
         'name' => 'panel_user',
+        'define_via_gate' => false,
+        'intercept_gate' => 'before',
     ],
 
     'permission_prefixes' => [
