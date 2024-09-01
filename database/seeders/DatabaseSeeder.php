@@ -23,6 +23,10 @@ class DatabaseSeeder extends Seeder
 
         Artisan::call('shield:super-admin', ['--user' => $user->id]);
 
-
+        Artisan::call('make:filament-user', [
+            '--name' => 'Administrador',
+            '--email' => 'filamentuser@example.com',
+            '--password' => 'password123'
+        ]);
     }
 }
