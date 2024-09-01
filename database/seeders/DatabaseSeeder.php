@@ -16,12 +16,12 @@ class DatabaseSeeder extends Seeder
     {
         // User::factory(10)->create();
 
-        User::factory()->create([
+        $user = User::factory()->create([
             'name' => 'Test User',
             'email' => 'test@example.com',
         ]);
 
-        Artisan::call('shield:super-admin', ['--user' => 1]);
+        Artisan::call('shield:super-admin', ['--user' => $user->id]);
 
 
     }
