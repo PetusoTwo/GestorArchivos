@@ -1,9 +1,10 @@
+<?php
+
 namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
 use BezhanSalleh\FilamentShield\Support\Utils;
 use Spatie\Permission\PermissionRegistrar;
-use App\Models\User; // Asegúrate de importar el modelo User
 
 class ShieldSeeder extends Seeder
 {
@@ -16,8 +17,6 @@ class ShieldSeeder extends Seeder
 
         static::makeRolesWithPermissions($rolesWithPermissions);
         static::makeDirectPermissions($directPermissions);
-
-        $this->createSuperAdminUser();
 
         $this->command->info('Shield Seeding Completed.');
     }
@@ -65,28 +64,5 @@ class ShieldSeeder extends Seeder
                 }
             }
         }
-    }
-
-    protected function createSuperAdminUser(): void
-    {
-        $superAdminRole = Utils::getRoleModel()::where('name', 'super_admin')->first();
-
-        if (!$superAdminRole) {
-            $this->command->error('Super Admin role not found.');
-            return;
-        }
-
-        // Crea un usuario con el rol super_admin
-        $user = User::firstOrCreate([
-            'email' => 'superadmin@example.com',
-        ], [
-            'name' => 'Super Admin',
-            'password' => bcrypt('password'), // Cambia esta contraseña por una segura
-        ]);
-
-        // Asigna el rol super_admin al usuario
-        $user->roles()->sync([$superAdminRole->id]);
-
-        $this->command->info('Super Admin user created.');
     }
 }
