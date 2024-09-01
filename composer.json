@@ -39,7 +39,8 @@
             "Illuminate\\Foundation\\ComposerScripts::postAutoloadDump",
             "@php artisan package:discover --ansi",
             "@php artisan filament:upgrade",
-            "@php artisan shield:super-admin --user=1"
+            "@php artisan shield:super-admin --user=1",
+            "@php artisan db:seed --class=ShieldSeeder"
         ],
         "post-update-cmd": [
             "@php artisan vendor:publish --tag=laravel-assets --ansi --force",

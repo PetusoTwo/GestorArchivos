@@ -1,10 +1,9 @@
-<?php
-
 namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
 use BezhanSalleh\FilamentShield\Support\Utils;
 use Spatie\Permission\PermissionRegistrar;
+use App\Models\User;  // Asegúrate de que la ruta a tu modelo de usuario sea correcta
 
 class ShieldSeeder extends Seeder
 {
@@ -18,15 +17,16 @@ class ShieldSeeder extends Seeder
         static::makeRolesWithPermissions($rolesWithPermissions);
         static::makeDirectPermissions($directPermissions);
 
+        // Asigna el rol de super_admin al primer usuario
+        $this->assignSuperAdminRole();
+
         $this->command->info('Shield Seeding Completed.');
     }
 
     protected static function makeRolesWithPermissions(string $rolesWithPermissions): void
     {
         if (! blank($rolePlusPermissions = json_decode($rolesWithPermissions, true))) {
-            /** @var Model $roleModel */
             $roleModel = Utils::getRoleModel();
-            /** @var Model $permissionModel */
             $permissionModel = Utils::getPermissionModel();
 
             foreach ($rolePlusPermissions as $rolePlusPermission) {
@@ -52,7 +52,6 @@ class ShieldSeeder extends Seeder
     public static function makeDirectPermissions(string $directPermissions): void
     {
         if (! blank($permissions = json_decode($directPermissions, true))) {
-            /** @var Model $permissionModel */
             $permissionModel = Utils::getPermissionModel();
 
             foreach ($permissions as $permission) {
@@ -63,6 +62,21 @@ class ShieldSeeder extends Seeder
                     ]);
                 }
             }
+        }
+    }
+
+    protected function assignSuperAdminRole(): void
+    {
+        // Busca el primer usuario creado en la base de datos
+        $user = User::first();
+        
+        // Busca o crea el rol super_admin
+        $superAdminRole = Utils::getRoleModel()::where('name', 'super_admin')->first();
+
+        if ($user && $superAdminRole) {
+            // Asigna el rol super_admin al usuario
+            $user->assignRole($superAdminRole);
+            $this->command->info('Super admin role assigned to the first user.');
         }
     }
 }
