@@ -29,9 +29,9 @@ class AdminPanelProvider extends PanelProvider
             ->id('admin')
             ->path('admin')
             ->login()
-            ->brandLogo(asset('images/ECOMHISA.webp'))
+            ->brandLogo(secure_asset('images/ECOMHISA.webp'))
             ->brandLogoHeight('4rem')
-            ->favicon(asset('images/ECOMHISA.webp'))
+            ->favicon(secure_asset('images/ECOMHISA.webp'))
             ->colors([
                 'danger' => Color::Red,
                 'gray' => Color::Slate,
